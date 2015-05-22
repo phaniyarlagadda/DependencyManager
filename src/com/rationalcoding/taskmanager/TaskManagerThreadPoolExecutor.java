@@ -90,6 +90,8 @@ public class TaskManagerThreadPoolExecutor<T> extends ThreadPoolExecutor{
                   getQueue().add(obj);
                   // remove the node from dependency weight map
                   dependencyWeights.remove(d);
+                  // update status of the dependency
+                  dependencyStatus.put(d, Status.SCHEDULED);
                } else {
                   dependencyWeights.put(d, remainingDependencyCount);
                }
@@ -117,7 +119,7 @@ public class TaskManagerThreadPoolExecutor<T> extends ThreadPoolExecutor{
    }
    
    public void printTaskOrder(){
-      System.out.println("Task Order : "+StringUtils.join(taskOrderList, "->"));
+      System.out.println("Order of task completion : "+StringUtils.join(taskOrderList, "->"));
    }
    
 

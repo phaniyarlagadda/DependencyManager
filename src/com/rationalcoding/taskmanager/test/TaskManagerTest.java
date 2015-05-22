@@ -30,6 +30,15 @@ public class TaskManagerTest {
       manager.orderAndExecuteTasks(dependencyGraph);
    }
    
+   @Test
+   public void basicTest2() throws IOException{
+      TaskManager<String> manager = new TaskManager<String>();
+      File inputFile = new File("sample2.txt");
+      Map<String, ArrayList<String>> dependencyGraph = parseInput(inputFile);
+      printGraph(dependencyGraph);
+      manager.orderAndExecuteTasks(dependencyGraph);
+   }
+   
    private void printGraph(Map<String, ArrayList<String>> dependencyGraph){
       for(String s:dependencyGraph.keySet()){
          System.out.println(s+"->"+StringUtils.join(dependencyGraph.get(s), ","));
