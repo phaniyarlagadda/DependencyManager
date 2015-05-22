@@ -77,9 +77,9 @@ public class TaskManagerThreadPoolExecutor<T> extends ThreadPoolExecutor{
          // if no tasks depend on this then continue
          if (reverseDependencyGraph.containsKey(dependency)) {
             for (T d : reverseDependencyGraph.get(dependency)) {
-               int currentEdges = dependencyWeights.get(d);
-               currentEdges--;
-               if (currentEdges == 0) {
+               int remainingDependencyCount = dependencyWeights.get(d);
+               remainingDependencyCount--;
+               if (remainingDependencyCount == 0) {
                   // if all dependencies have been satisfied for this task
                   // add it to the queue for processing
                   int edgeWeight = 0;
@@ -91,7 +91,7 @@ public class TaskManagerThreadPoolExecutor<T> extends ThreadPoolExecutor{
                   // remove the node from dependency weight map
                   dependencyWeights.remove(d);
                } else {
-                  dependencyWeights.put(d, currentEdges);
+                  dependencyWeights.put(d, remainingDependencyCount);
                }
             }
          }
