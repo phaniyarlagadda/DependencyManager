@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -36,9 +35,12 @@ public class TaskManager<T> {
     * @param dependencyGraph
     */
    public void orderAndExecuteTasks(Map<T, ArrayList<T>> dependencyGraph) {
+      // reverse dependency graph is not changed once initalized
       reverseDependencyGraph = new HashMap<T, ArrayList<T>>();
       dependencyStatus = new ConcurrentHashMap<T, Status>();
       dependencyQueue = new PriorityBlockingQueue<TaskRunnable<T>>();
+      dependencyWeights = new HashMap<T, Integer>();
+      
       buildReverseDependencyGraph(dependencyGraph, reverseDependencyGraph);
       System.out.println("Printing reverse dependency order");
       printGraph(reverseDependencyGraph);
@@ -88,7 +90,6 @@ public class TaskManager<T> {
          }
          dependencyStatus.put(node, Status.WAITING);
       }
-      dependencyWeights = new HashMap<T, Integer>();
       for (T dependecy : dependencyGraph.keySet()) {
          if (dependencyGraph.get(dependecy).size() == 0) {
             int edgeWeight = 0;

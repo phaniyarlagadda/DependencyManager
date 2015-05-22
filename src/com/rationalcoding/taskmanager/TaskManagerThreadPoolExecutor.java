@@ -95,14 +95,13 @@ public class TaskManagerThreadPoolExecutor<T> extends ThreadPoolExecutor{
                }
             }
          }
+         // if all tasks are finished shutdown the pool
+         if(dependencyWeights.size() == 0 && getQueue().size() == 0){
+            shutdown();
+         }
          printStatus();
       }finally{
          reeentrantLock.unlock();
-      }
-      
-      // if all tasks are finished shutdown the pool
-      if(dependencyWeights.size() == 0 && getQueue().size() == 0){
-         shutdown();
       }
    }
    
